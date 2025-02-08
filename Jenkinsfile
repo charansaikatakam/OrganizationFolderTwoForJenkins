@@ -26,7 +26,7 @@ pipeline {
             parallel {
                 stage('InstallPackages') {
                     steps {
-                        sh 'npm install'
+                        echo "parallel build"
                     }
                 }
                 stage('Dependecy check using tool') {
