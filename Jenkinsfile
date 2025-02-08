@@ -26,7 +26,7 @@ pipeline {
             parallel {
                 stage('InstallPackages') {
                     steps {
-                        echo "parallel build"
+                        sh 'npm install'
                     }
                 }
                 stage('Dependecy check using tool') {
@@ -35,6 +35,7 @@ pipeline {
                             --out  \'./\'
                             --scan \'./\'
                             --format \'ALL\'
+                            --nvdApiKey $nvdAPIKey
                             --prettyPrint''', odcInstallation: 'dependency-check-10-0-0', stopBuild: true
                     }
                 }
