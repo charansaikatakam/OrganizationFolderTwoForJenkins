@@ -38,7 +38,7 @@ pipeline {
                             --scan . \
                             --format "HTML" \
                             --out dependency-check-report.html \
-                            --apiKey "$nvdAPIKey"
+                            --nvdApiKey "$nvdAPIKey"
                             '''
                         }
                 }
