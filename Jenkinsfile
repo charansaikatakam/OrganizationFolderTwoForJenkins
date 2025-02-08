@@ -37,7 +37,8 @@ pipeline {
                             "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
                             --scan . \
                             --format "HTML" \
-                            --out dependency-check-report.html 
+                            --out dependency-check-report.html \
+                            --nvdApiKey "$nvdAPIKey"
                             '''
                         }
                 }
