@@ -35,8 +35,7 @@ pipeline {
                         --scan \\\'./\\\'
                         --format \\\'ALL\\\'
                         --nvdCredentialsId "${env.nvdAPIKey}"
-                        --prettyPrint odcInstallation: 'dependency-check-10-0-0'
-                         '''
+                        --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'  
                     }
                 }
             }
