@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         nodejs 'NodeJS-22-6-0'
-        dependencyCheck 'dependency-check-10-0-0'
+        dependency-check 'dependency-check-10-0-0'
     }
 
     environment {
