@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
+        DEPENDENCY_CHECK_HOME = tool 'Dependency-Check'
     }
 
     stages {
@@ -26,18 +27,19 @@ pipeline {
             parallel {
                 stage('InstallPackages') {
                     steps {
-                        sh 'npm install'
+                        sh 'npm install --no-audit'
                         echo "${nvdAPIKey}"
                     }
                 }
                 stage('Dependecy check using tool') {
                     steps {
-                        dependencyCheck additionalArguments: '''
-                            --out  \'./\'
-                            --scan \'./\'
-                            --format \'ALL\'
-                            --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
-                    }
+                        sh '''
+                            ${DEPENDENCY_CHECK_HOME}/bin/dependency-check.sh \
+                            --scan . \
+                            --format "HTML" \
+                            --out dependency-check-report.html \
+                            --apiKey "$nvdAPIKey"
+                            '''
                 }
             }
         }
