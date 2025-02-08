@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS-22-6-0'
+    }
+
     stages {
         stage('ChcekEnvVariables') {
             steps {
@@ -10,7 +14,7 @@ pipeline {
         }
         stage('CheckNodeVersion') {
             steps {
-                sh 'node -V'
+                sh 'node -v'
                 sh 'npm -v'
             }
         }
