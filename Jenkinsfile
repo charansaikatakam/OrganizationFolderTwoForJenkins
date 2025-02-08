@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
-        DEPENDENCY_CHECK_HOME = tool 'Dependency-Check'
+        DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
     stages {
