@@ -36,10 +36,12 @@ pipeline {
                         timeout(time: 15, unit: 'MINUTES')
                     }
                     steps {
+
+
                         sh '''
                             "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
                             --scan . \
-                            --format "HTML" \
+                            --format "ALL" \
                             --out . \
                             --nvdApiKey "$nvdAPIKey"
                             '''
