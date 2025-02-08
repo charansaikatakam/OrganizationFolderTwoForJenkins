@@ -32,6 +32,9 @@ pipeline {
                     }
                 }
                 stage('Dependecy check using tool') {
+                    options {
+                        timeout(time: 15, unit: 'MINUTES')
+                    }
                     steps {
                         sh '''
                             "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
