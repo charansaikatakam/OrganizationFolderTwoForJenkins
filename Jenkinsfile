@@ -37,14 +37,21 @@ pipeline {
                     }
                     steps {
                         sh 'npm install -g yarn'
-                        sh '''
-                            "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
-                            --scan . \
-                            --format "HTML" \
-                            --out . \
+                        dependencyCheck additionalArguments: '''
+                            --out  \'./\'
+                            --scan \'./\'
+                            --format \'HTML\'
                             --nvdApiKey "$nvdAPIKey"
-                            '''
-                        }
+                            --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
+                    }
+                        // sh '''
+                        //     "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
+                        //     --scan . \
+                        //     --format "HTML" \
+                        //     --out . \
+                        //     --nvdApiKey "$nvdAPIKey"
+                        //     '''
+                    }
                 }
             }
         }
