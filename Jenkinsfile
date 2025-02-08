@@ -3,6 +3,11 @@ pipeline {
 
     tools {
         nodejs 'NodeJS-22-6-0'
+        dependencyCheck 'dependency-check-10-0-0'
+    }
+
+    environment {
+        nvdAPIKey = credentials('NVPAPIKEY')
     }
 
     stages {
@@ -18,9 +23,23 @@ pipeline {
                 sh 'npm -v'
             }
         }
-        stage('InstallPackages') {
-            steps {
-                sh 'npm install --no-audit'
+        stage('Dependency Check') {
+            parallel {
+                stage('InstallPackages') {
+                    steps {
+                        sh 'npm install'
+                    }
+                }
+                stage('Dependecy check using tool') {
+                    steps {
+                        dependencyCheck additionalArguments: '''--project	\\\'./\\\'
+                        --scan \\\'./\\\'
+                        --format \\\'ALL\\\'
+                        --nvdCredentialsId "${env.nvdAPIKey}"
+                        --prettyPrint odcInstallation: 'dependency-check-10-0-0'
+                         '''
+                    }
+                }
             }
         }
     }
