@@ -34,7 +34,6 @@ pipeline {
                         dependencyCheck additionalArguments: '''--project	\\\'./\\\'
                         --scan \\\'./\\\'
                         --format \\\'ALL\\\'
-                        --nvdCredentialsId "${env.nvdAPIKey}"
                         --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'  
                     }
                 }
