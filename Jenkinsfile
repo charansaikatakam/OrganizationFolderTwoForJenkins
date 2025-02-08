@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello World'
+                echo 'Branch Name is ${env.BRANCH_NAME}'
+                echo 'Build Number is ${env.BUILD_NUMBER} and Git commit is ${GIT_COMMIT}'
             }
         }
     }
