@@ -31,10 +31,11 @@ pipeline {
                 }
                 stage('Dependecy check using tool') {
                     steps {
-                        dependencyCheck additionalArguments: '''--project	\\\'./\\\'
-                        --scan \\\'./\\\'
-                        --format \\\'ALL\\\'
-                        --prettyPrint''', odcInstallation: 'dependency-check-10-0-0', stopBuild: true
+                        dependencyCheck additionalArguments: '''
+                            --out  \'./\'
+                            --scan \'./\'
+                            --format \'ALL\'
+                            --prettyPrint''', odcInstallation: 'dependency-check-10-0-0', stopBuild: true
                     }
                 }
             }
