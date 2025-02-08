@@ -27,6 +27,7 @@ pipeline {
                 stage('InstallPackages') {
                     steps {
                         sh 'npm install'
+                        echo "$nvdAPIKey"
                     }
                 }
                 stage('Dependecy check using tool') {
