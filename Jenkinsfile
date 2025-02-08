@@ -40,6 +40,7 @@ pipeline {
                             --out dependency-check-report.html \
                             --apiKey "$nvdAPIKey"
                             '''
+                        }
                 }
             }
         }
