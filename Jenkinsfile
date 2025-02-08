@@ -28,7 +28,7 @@ pipeline {
                 stage('InstallPackages') {
                     steps {
                         sh 'npm install --no-audit'
-                        echo "${nvdAPIKey}"
+                        sh 'echo ${nvdAPIKey}'
                     }
                 }
                 stage('Dependecy check using tool') {
