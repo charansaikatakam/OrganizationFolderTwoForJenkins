@@ -41,6 +41,8 @@ pipeline {
                             --format \'HTML\'
                             --nvdApiKey "$nvdAPIKey"
                             --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
+                        
+                        dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: true
                         // sh '''
                         //     "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
                         //     --scan . \
