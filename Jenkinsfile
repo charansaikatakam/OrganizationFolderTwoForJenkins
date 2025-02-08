@@ -34,7 +34,7 @@ pipeline {
                         dependencyCheck additionalArguments: '''--project	\\\'./\\\'
                         --scan \\\'./\\\'
                         --format \\\'ALL\\\'
-                        --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'  
+                        --prettyPrint''', odcInstallation: 'dependency-check-10-0-0', stopBuild: true
                     }
                 }
             }
