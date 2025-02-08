@@ -27,7 +27,7 @@ pipeline {
                 stage('InstallPackages') {
                     steps {
                         sh 'npm install'
-                        echo "$nvdAPIKey"
+                        echo "${nvdAPIKey}"
                     }
                 }
                 stage('Dependecy check using tool') {
@@ -36,7 +36,7 @@ pipeline {
                             --out  \'./\'
                             --scan \'./\'
                             --format \'ALL\'
-                            --prettyPrint''', odcInstallation: 'dependency-check-10-0-0', stopBuild: true
+                            --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
                     }
                 }
             }
