@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
+        MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
         // DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
@@ -54,6 +55,14 @@ pipeline {
                         //     '''
                     }
                 }
+            }
+        }
+        
+        stage('Unit Tests') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'MongoDBCreds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                    sh 'npm test'
+                }  
             }
         }
     }
