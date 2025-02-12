@@ -27,7 +27,7 @@ pipeline {
             parallel {
                 stage('InstallPackages') {
                     steps {
-                        sh 'npm install --no-audit'
+                        sh 'npm install --audit-level=critical'
                     }
                 }
                 stage('Dependecy check using tool') {
