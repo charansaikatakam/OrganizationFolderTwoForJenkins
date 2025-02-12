@@ -43,6 +43,8 @@ pipeline {
                             --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
                         
                         dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: true
+
+                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         // sh '''
                         //     "$DEPENDENCY_CHECK_HOME"/bin/dependency-check.sh \
                         //     --scan . \
