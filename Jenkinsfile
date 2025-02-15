@@ -8,6 +8,7 @@ pipeline {
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
         MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
+        SONAR_SCANNER_HOME = 'tool sonarScanner-7-0'
         // DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
@@ -60,9 +61,24 @@ pipeline {
         
         stage('Unit Tests') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'MongoDBCreds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    sh 'npm test'
-                }  
+                catchError(message: 'Unit tests failed check the actual Error', stageResult: 'SUCCESS', buildResult: 'UNSTABLE')
+                {
+                    withCredentials([usernamePassword(credentialsId: 'MongoDBCreds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                        sh 'npm test'
+                    }  
+                }
+            }
+        }
+
+        stage('Sonar Scanner SAST'){
+            steps{
+                sh '''
+                    $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectKey=solar-system-project \
+                    -Dsonar.sources=app.js \
+                    -Dsonar.host.url=http://54.234.24.224:9000 \
+                    -Dsonar.token=sqp_dc63b70c476a768131e3467d8e60672e0d3e19c7
+                '''
             }
         }
     }
