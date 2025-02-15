@@ -41,7 +41,6 @@ pipeline {
                             --out  \'./\'
                             --scan \'./\'
                             --format \'ALL\'
-                            --nvdApiKey "$nvdAPIKey"
                             --prettyPrint''', odcInstallation: 'dependency-check-10-0-0'
                         
                         dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: true
