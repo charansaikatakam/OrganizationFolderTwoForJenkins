@@ -8,7 +8,7 @@ pipeline {
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
         MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
-        SONAR_SCANNER_HOME = 'tool sonarScanner-7-0'
+        SONAR_SCANNER_HOME = tool 'sonarScanner-7-0'
         // DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
