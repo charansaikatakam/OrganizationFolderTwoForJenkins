@@ -9,6 +9,8 @@ pipeline {
         nvdAPIKey = credentials('NVPAPIKEY')
         MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
         SONAR_SCANNER_HOME = tool 'sonarScanner-7-0'
+        sonartoken = credentials('sonartoken')
+        sonarUrl = credentials('sonarUrl')
         // DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
@@ -74,9 +76,9 @@ pipeline {
                 sh '''
                     $SONAR_SCANNER_HOME/bin/sonar-scanner \
                     -Dsonar.projectKey=solar-system-project \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=http://54.160.186.97:9000 \
-                    -Dsonar.token=sqp_e49e0b1838f54b2e41c16d8a5620feddf6671bc2
+                    -Dsonar.sources=app.js \
+                    -Dsonar.host.url=$sonarUrl \
+                    -Dsonar.token="$sonartoken"
                 '''
             }
         }
