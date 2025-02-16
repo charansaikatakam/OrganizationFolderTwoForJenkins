@@ -119,7 +119,8 @@ pipeline {
                 """
                 emailext subject: "Jenkins Build ${status}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                          body: message,
-                         mimeType: 'text/html'
+                         mimeType: 'text/html',
+                         to: 'charansaikatakam@gmail.com'
             }
         }
     }
