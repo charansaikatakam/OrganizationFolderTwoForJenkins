@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs')
 const express = require('express');
@@ -12,23 +13,38 @@ const serverless = require('serverless-http')
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
-
-mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, function(err) {
-    if (err) {
-        console.log("error!! " + err)
-    } else {
-      //  console.log("MongoDB Connection Successful")
+// console.log('User:', process.env.MONGO_USER);
+// console.log('Password:', process.env.MONGO_PASSWORD);
+// console.log('URI:', process.env.MONGO_URI);
+// const uri = 'mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@solar-system.gsn59.mongodb.net/solar-system?retryWrites=true&w=majority&appName=solar-system';
+// console.log(uri)
+const connectToMongo = async () => {
+    try {
+        mongoose.connect(process.env.MONGO_URI,{
+            user: process.env.MONGO_USER,
+            pass: process.env.MONGO_PASSWORD,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }) 
+        console.log('Mongo connected')
     }
-})
+    catch(error) {
+        console.log(error)
+        process.exit()
+    }
+}
+module.exports = connectToMongo();
 
+// mongoose.set('debug', true);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 var Schema = mongoose.Schema;
 
 var dataSchema = new Schema({
+    _id: Object,
     name: String,
     id: Number,
     description: String,
@@ -36,7 +52,7 @@ var dataSchema = new Schema({
     velocity: String,
     distance: String
 });
-var planetModel = mongoose.model('planets', dataSchema);
+var planetModel = mongoose.model('Planet', dataSchema, 'planets');
 
 /*
 
@@ -57,6 +73,7 @@ app.post('/planet',   function(req, res) {
 app.post('/planet', async function (req, res) {
     try {
         // Find the planet by ID
+       // console.log(req.body.id)
         const planetData = await planetModel.findOne({ id: req.body.id });
 
         if (!planetData) {
