@@ -102,5 +102,26 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            script {
+                def status = currentBuild.currentResult
+                def color = (status == 'SUCCESS') ? 'green' : ((status == 'FAILURE') ? 'red' : 'yellow')
+                def message = """
+                <html>
+                    <body>
+                        <h1 style="color:${color};">Build Status: ${status}</h1>
+                        <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                        <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                        <p><strong>Build URL:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    </body>
+                </html>
+                """
+                emailext subject: "Jenkins Build ${status}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                         body: message,
+                         mimeType: 'text/html'
+            }
+        }
+    }
 }
 
