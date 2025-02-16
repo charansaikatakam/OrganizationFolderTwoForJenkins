@@ -13,8 +13,8 @@ pipeline {
         nvdAPIKey = credentials('NVPAPIKEY')
         MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
         SONAR_SCANNER_HOME = tool 'sonarScanner-7-0'
-        sonartoken = credentials('sonartoken')
-        sonarUrl = credentials('sonarUrl')
+ //       sonartoken = credentials('sonartoken')
+   //     sonarUrl = credentials('sonarUrl')
         // DEPENDENCY_CHECK_HOME = tool 'dependency-check-10-0-0'
     }
 
@@ -86,16 +86,19 @@ pipeline {
             }
         }
 
-        stage('Sonar Scanner SAST'){
+        stage('Sonar Scanner SAST and wait for quality gate'){
             steps{
-                sh '''
-                    $SONAR_SCANNER_HOME/bin/sonar-scanner \
-                    -Dsonar.projectKey=solar-system-project \
-                    -Dsonar.sources=app.js \
-                    -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
-                    -Dsonar.host.url=$sonarUrl \
-                    -Dsonar.token="$sonartoken"
-                '''
+                withSonarQubeEnv(credentialsId: 'sonartoken') {
+                    sh '''
+                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectKey=solar-system-project \
+                        -Dsonar.sources=app.js \
+                        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
+                    '''
+                }
+                timeout(time: 2, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline: false
+                }
             }
         }
     }
