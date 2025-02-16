@@ -88,7 +88,7 @@ pipeline {
 
         stage('Sonar Scanner SAST and wait for quality gate'){
             steps{
-                withSonarQubeEnv(credentialsId: 'sonartoken') {
+                withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'sonarqube-server') {
                     sh '''
                         $SONAR_SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectKey=solar-system-project \
