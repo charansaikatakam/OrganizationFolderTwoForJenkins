@@ -5,6 +5,10 @@ pipeline {
         nodejs 'NodeJS-22-6-0'
     }
 
+     options { 
+        disableResume() 
+        }
+
     environment {
         nvdAPIKey = credentials('NVPAPIKEY')
         MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
@@ -71,12 +75,24 @@ pipeline {
             }
         }
 
+        stage('Code Coverate') {
+            steps {
+                catchError(message: 'Code coverage failed', stageResult: 'SUCCESS', buildResult: 'UNSTABLE')
+                {
+                    withCredentials([usernamePassword(credentialsId: 'MongoDBCreds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                        sh 'npm run coverage'
+                    }  
+                }
+            }
+        }
+
         stage('Sonar Scanner SAST'){
             steps{
                 sh '''
                     $SONAR_SCANNER_HOME/bin/sonar-scanner \
                     -Dsonar.projectKey=solar-system-project \
                     -Dsonar.sources=app.js \
+                    -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                     -Dsonar.host.url=$sonarUrl \
                     -Dsonar.token="$sonartoken"
                 '''
